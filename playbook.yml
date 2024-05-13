@@ -1,0 +1,14 @@
+---
+- name: Install Lemp on Ubuntu, Debian, CentOS
+  hosts: all
+  become: yes
+
+  roles:
+    - role: nginx
+      tags: nginx
+
+    - role: mysql
+      tags: mysql
+
+    - role: php
+      tags: php

@@ -1,0 +1,44 @@
+---
+# tasks file for nginx
+    - name: Check OS Version
+      debug: var=ansible_os_family
+
+    - block: #====Block Ubuntu====
+      - name: Install nginx on Ubuntu
+        apt:
+          name: nginx
+          state: latest
+          update_cache: yes
+
+      - name: Launch nginx Ubuntu
+        service:
+          name: nginx
+          state: started
+          enabled: yes
+
+      when: ansible_os_family=="Debian" and ansible_distribution=="Ubuntu"
+
+    - block: #====Block Debian====
+      - name: Install nginx on Debian
+        apt:
+          name: nginx
+          state: latest
+          update_cache: yes
+
+      - name: Launch nginx Debian
+        service:
+          name: nginx
+          state: started
+          enabled: yes
+      when: ansible_os_family=="Debian" and ansible_distribution=="Debian"
+
+    - block: #====Block CentOS====
+      - name: Install nginx on CentOS
+        yum: name=nginx state=latest
+
+      - name: Launch nginx CentOS
+        service:
+          name: nginx
+          state: started
+          enabled: yes
+      when: ansible_os_family=="RedHat"

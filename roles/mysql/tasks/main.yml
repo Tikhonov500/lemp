@@ -1,0 +1,44 @@
+---
+# tasks file for mysql
+    - name: Check OS Version
+      debug: var=ansible_os_family
+
+    - block: #====Block Ubuntu====
+      - name: Install mySQL on Ubuntu
+        apt:
+          name: mysql-server
+          state: latest
+          update_cache: yes
+
+      - name: Launch mySQL Ubuntu
+        service:
+          name: mysql
+          state: started
+          enabled: yes
+
+      when: ansible_os_family=="Debian" and ansible_distribution=="Ubuntu"
+
+    - block: #====Block Debian====
+      - name: Install mySQL on Debian
+        apt:
+          name: mariadb-server
+          state: latest
+          update-cache: yes
+
+      - name: Launch mysql Debian
+        service:
+          name: mysql
+          state: started
+          enabled: yes
+
+      when: ansible_os_family=="Debian" and ansible_distribution=="Debian"
+
+    - block: #====Block CentOS====
+      - name: Install mySQL on CentOS
+        yum: name=mysql-server state=latest
+
+      - name: Launch nginx CentOS
+        service:
+          name: mysqld
+          state: started
+      when: ansible_os_family=="RadHat"
