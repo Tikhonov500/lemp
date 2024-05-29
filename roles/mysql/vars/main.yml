@@ -1,2 +1,9 @@
 ---
 # vars file for mysql
+
+mysql_package_ubuntu: mysql-server
+mysql_package_debian: mariadb-server
+mysql_package_centos: mysql-server
+mysql_service_ubuntu: mysql
+mysql_service_debian: mysql
+mysql_service_centos: mysqld

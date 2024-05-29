@@ -1,2 +1,10 @@
 ---
 # vars file for php
+
+php_packages:
+  - php-fpm
+  - php-mysql
+  - php-cli
+  - php-curl
+  - php-gd
+  - php-xml

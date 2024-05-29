@@ -6,13 +6,13 @@
     - block: #====Block Ubuntu====
       - name: Install mySQL on Ubuntu
         apt:
-          name: mysql-server
+          name: "{{ mysql_package_ubuntu }}"
           state: latest
           update_cache: yes
 
       - name: Launch mySQL Ubuntu
         service:
-          name: mysql
+          name: "{{ mysql_service_ubuntu }}"
           state: started
           enabled: yes
 
@@ -21,13 +21,13 @@
     - block: #====Block Debian====
       - name: Install mySQL on Debian
         apt:
-          name: mariadb-server
+          name: "{{ mysql_package_debian }}"
           state: latest
           update-cache: yes
 
       - name: Launch mysql Debian
         service:
-          name: mysql
+          name: "{{ mysql_service_debian }}"
           state: started
           enabled: yes
 
@@ -35,10 +35,12 @@
 
     - block: #====Block CentOS====
       - name: Install mySQL on CentOS
-        yum: name=mysql-server state=latest
+        yum:
+          name: "{{ mysql_package_centos }}"
+          state: latest
 
       - name: Launch nginx CentOS
         service:
-          name: mysqld
+          name: "{{ mysql_service_centos }}"
           state: started
       when: ansible_os_family=="RadHat"

@@ -3,50 +3,22 @@
     - name: Check OS Version
       debug: var=ansible_os_family
 
-    - block: #====Block Ubuntu====
-      - name: Install php on Ubuntu
+    - block: #====Block Ubuntu and Debian====
+      - name: Install php on Ubuntu 
         apt:
           name: "{{ item }}"
           state: present
           update_cache: yes
-        loop:
-          - php-fpm
-          - php-mysql
-          - php-cli
-          - php-curl
-          - php-gd
-          - php-xml
+        loop: "{{ php_packages }}"
 
-      when: ansible_os_family=="Debian" and ansible_distribution=="Ubuntu"
-
-    - block: #====Block Debian====
-      - name: Install php on Debian
-        apt:
-          name: "{{ item }}"
-          state: present
-          update_cache: yes
-        loop:
-          - php-fpm
-          - php-mysql
-          - php-cli
-          - php-curl
-          - php-gd
-          - php-xml
-
-      when: ansible_os_family=="Debian" and ansible_distribution=="Debian"
+      when: ansible_os_family=="Debian"
 
     - block: #====Block CentOS====
       - name: Install php on CentOS
         yum:
           name: "{{ item }}"
           state: present
-        loop:
-          - php-fpm
-          - php-mysql
-          - php-cli
-          - php-curl
-          - php-gd
-          - php-xml
+        loop: "{{ php_packages }}"
 
       when: ansible_os_family=="RadHat"
 

@@ -1,8 +1,8 @@
 [ubuntu_server]
-ubuntu   ansible_host=18.232.182.65
+ubuntu   ansible_host=54.236.110.1
 
 [centOS_server]
-centos   ansible_host=52.207.240.187
+centos   ansible_host=54.234.211.67
 
 [debian_server]
-debian   ansible_host=100.27.216.154
+debian   ansible_host=54.226.191.113
