@@ -3,41 +3,25 @@
     - name: Check OS Version
       debug: var=ansible_os_family
 
-    - block: #====Block Ubuntu and Debian====
-      - name: Install nginx on Ubuntu and Debian
-        apt:
-          name: nginx
-          state: latest
-          update_cache: yes
+   - name: Update apt cache on Debian
+      apt:
+        update_cache: yes
+    when: ansible_os_family == "Debian"
 
-      - name: Launch nginx Ubuntu and Debian
-        systemd:
-          name: nginx
-          state: started
-          enabled: yes
+    - name: Install nginx on all systems
+      package:
+        name: nginx
+        state: latest
 
-      - name: Create Nginx configuration file
-        template:
-          src: nginx.conf
-          dest: /etc/nginx/nginx.conf
-        notify: Restart nginx
-      when: ansible_os_family=="Debian"
+    - name: Launch nginx 
+      systemd:
+        name: nginx
+        state: started
+        enabled: yes
 
-    - block: #====Block CentOS====
-      - name: Install nginx on CentOS
-        yum:
-          name: nginx 
-          state: latest
+    - name: Create Nginx configuration file
+      template:
+        src: nginx.conf
+        dest: /etc/nginx/nginx.conf
+      notify: Restart nginx
 
-      - name: Launch nginx CentOS
-        systemd:
-          name: nginx
-          state: started
-          enabled: yes
-
-      - name: Create Nginx configuration file
-        template:
-          src: nginx.conf
-          dest: /etc/nginx/nginx.conf
-        notify: Restart nginx
-      when: ansible_os_family=="RedHat"

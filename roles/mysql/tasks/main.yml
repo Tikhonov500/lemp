@@ -3,20 +3,13 @@
     - name: Check OS Version
       debug: var=ansible_os_family
 
-    - block: #====Block Ubuntu====
-      - name: Install mySQL on Ubuntu
+    - block: #====Block Ubuntu, CentOS====
+      - name: Install mySQL on Ubuntu, CentOS
         apt:
           name: "{{ mysql_package_ubuntu }}"
           state: latest
           update_cache: yes
-
-      - name: Launch mySQL Ubuntu
-        service:
-          name: "{{ mysql_service_ubuntu }}"
-          state: started
-          enabled: yes
-
-      when: ansible_os_family=="Debian" and ansible_distribution=="Ubuntu"
+      when: (ansible_os_family=="Debian" and ansible_distribution=="Ubuntu") or ansible_os_family=="RadHat"
 
     - block: #====Block Debian====
       - name: Install mySQL on Debian
@@ -24,21 +17,16 @@
           name: "{{ mysql_package_debian }}"
           state: latest
           update-cache: yes
-
-      - name: Launch mysql Debian
-        service:
-          name: "{{ mysql_service_debian }}"
-          state: started
-          enabled: yes
-
       when: ansible_os_family=="Debian" and ansible_distribution=="Debian"
 
-    - block: #====Block CentOS====
-      - name: Install mySQL on CentOS
-        yum:
-          name: "{{ mysql_package_centos }}"
-          state: latest
+    - name: Launch mysql Debian, ubuntu
+      service:
+        name: "{{ mysql_service_debian }}"
+        state: started
+        enabled: yes
 
+
+    - block: #====Block CentOS====
       - name: Launch nginx CentOS
         service:
           name: "{{ mysql_service_centos }}"
